@@ -15,9 +15,30 @@ const users = [{
     email:'mike@mail.com'
 }]
 
+const posts = [{
+    id:'10',
+    title:'GraphQL 101',
+    body:'This is an advanced GraphQL post...',
+    published:true
+},{
+    id:'11',
+    title:'GraphQL 201',
+    body:'This is an advanced GraphQL post...',
+    published:false
+},{
+    id:'12',
+    title:'Programming Music',
+    body:'',
+    published:false
+}
+
+]
+
+
 const typeDefs = `
     type Query {
         users(query:String):[User!]!
+        posts(query:String):[Post!]!
         me: User!
         post: Post!
     }
@@ -44,6 +65,16 @@ const resolvers = {
                 return users;
             }
             return users.filter((user) => user.email.toLowerCase().includes(args.query.toLowerCase()))
+        },
+        posts(parent,args,ctx,info){
+            if(!args.query){
+                return posts;
+            }
+            return posts.filter((post) => {
+                const isTitleMatch = post.title.toLowerCase().includes(args.query.toLowerCase());
+                const isBodyMatch = post.body.toLowerCase().includes(args.query.toLowerCase());
+                return isTitleMatch || isBodyMatch;
+            })
         },
         me() {
             return {
