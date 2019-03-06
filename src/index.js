@@ -134,7 +134,7 @@ const resolvers = {
             return users.find((user) => user.id === parent.author);
         },
         comments(parent,args,ctx,info){
-            return comments.filster((comment) => comment.id === parent.post);
+            return comments.filter((comment) => comment.id === parent.post);
         }
     },
     Comment:{
