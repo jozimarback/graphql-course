@@ -31,24 +31,24 @@ const mutation = {
         return deletedUsers[0];
 
     },
-    updateUser(parent, args, { db }, info){
-        const {id,data} = args;
+    updateUser(parent, args, { db }, info) {
+        const { id, data } = args;
         const user = db.users.find(user => user.id === id)
-        if(!user){
+        if (!user) {
             throw new Error('User not found')
         }
 
-        if(typeof data.email === 'string'){
+        if (typeof data.email === 'string') {
             const emailTaken = db.users.some(user => user.email === data.email)
-            if(emailTaken){
+            if (emailTaken) {
                 throw new Error('Email taken')
             }
             user.email = data.email
         }
-        if(typeof data.name === 'string'){
+        if (typeof data.name === 'string') {
             user.name = data.name
         }
-        if(typeof data.age !== 'undefined'){
+        if (typeof data.age !== 'undefined') {
             user.age = data.age
         }
         return user;
@@ -63,6 +63,24 @@ const mutation = {
         }
 
         db.posts.push(post);
+        return post;
+    },
+    updatePost(parent, args, { db }, info) {
+        const { id, data } = args;
+        const post = db.post.find((post) => post.id === id)
+        if(!post){
+            throw new Error('Post not found')
+        }
+        if(typeof data.title == 'string'){
+            post.title = data.title;
+        }
+        if(typeof data.body == 'string'){
+            post.body = data.body;
+        }
+        if(typeof data.published == 'boolean'){
+            post.published = data.published;
+        }
+
         return post;
     },
     deletePost(parent, args, { db }, info) {
@@ -94,7 +112,18 @@ const mutation = {
             throw new Error('Comment not found')
         const deletedComments = db.comments.splice(commentIndex, 1);
         return deletedComments[0]
+    },
+    updateComment(parent, args, { db }, info){
+        const {id,data}= args;
+        const comment = db.comments.find((comment) => comment.id ==id);
+        if(!comment){
+            throw new Error('Comment not found')
+        }
+        if(typeof data.text === 'string'){
+            comment.text = data.text;
+        }
+        return comment;
     }
 };
 
-export {mutation as default}
+export { mutation as default }
