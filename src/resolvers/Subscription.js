@@ -5,8 +5,8 @@ const Subscription = {
             setInterval(() => {
                 count++;
                 pubsub.publish('count', {
-                    count: count
-                },1000)
+                    count
+                }, 1000)
             })
 
             return pubsub.asyncIterator('count')
