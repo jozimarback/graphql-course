@@ -63,6 +63,9 @@ const mutation = {
         }
 
         db.posts.push(post);
+        if(args.data.publish){
+            pubsub.publish('post',{post});
+        }
         return post;
     },
     updatePost(parent, args, { db }, info) {
